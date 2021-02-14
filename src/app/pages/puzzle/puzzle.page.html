@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title>
+      <ng-container
+        *ngIf="(puzzle$ | async)?.title as title; else loadingTitle"
+      >
+        {{ title }}
+      </ng-container>
+      <ng-template #loadingTitle>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ng-template>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container
+    *ngIf="(puzzle$ | async)?.description as description; else loadingDescription"
+  >
+    {{ description }}
+  </ng-container>
+  <ng-template #loadingDescription>
+    <ion-skeleton-text animated></ion-skeleton-text>
+  </ng-template>
+</ion-content>
+
+<ion-footer>
+  <ion-button
+    expand="block"
+    routerLink="/play"
+    [queryParams]="{ puzzle: id$ | async }"
+    routerDirection="root"
+  >
+    Play
+  </ion-button>
+</ion-footer>

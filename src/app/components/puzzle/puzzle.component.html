@@ -1,0 +1,58 @@
+<div
+  id="root"
+  [style.--puzzle-width]="puzzleWidth$ | async"
+  [style.--puzzle-height]="puzzleHeight$ | async"
+  [style.--clue-width]="noClues ? 0 : (clueWidth$ | async)"
+  [style.--clue-height]="noClues ? 0 : (clueHeight$ | async)"
+>
+  <div id="content">
+    <ng-container *ngIf="!noClues">
+      <ng-content></ng-content>
+    </ng-container>
+  </div>
+
+  <div id="vertical-clues">
+    <ng-container *ngIf="!noClues">
+      <div class="clues" *ngFor="let clues of verticalClues$ | async">
+        <div
+          class="clue"
+          *ngFor="let clue of clues; index as i"
+          [attr.data-index]="i"
+        >
+          {{ clue }}
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div id="horizontal-clues">
+    <ng-container *ngIf="!noClues">
+      <div class="clues" *ngFor="let clues of horizontalClues$ | async">
+        <div
+          class="clue"
+          *ngFor="let clue of clues; index as i"
+          [attr.data-index]="i"
+        >
+          {{ clue }}
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div id="field" (contextmenu)="onContextMenu($event)">
+    <button
+      class="cell"
+      *ngFor="let cell of cells$ | async; index as i"
+      [attr.data-row-index]="i"
+      [attr.data-column-index]="i"
+      [disabled]="cell.correct !== undefined"
+      [class.goal-true]="cell.goal === true"
+      [class.goal-false]="cell.goal === false"
+      [class.revealed]="cell.correct !== undefined"
+      [class.correct]="cell.correct === true"
+      [class.incorrect]="cell.correct === false"
+      (click)="onClick($event, i, !invertClicks)"
+      (auxclick)="onClick($event, i, invertClicks)"
+    ></button>
+  </div>
+</div>

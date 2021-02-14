@@ -1,0 +1,129 @@
+@import "~@ionic/angular/css/normalize.css";
+
+:host {
+  --min-cell-size: 2em;
+  --max-cell-size: 4em;
+}
+
+#root {
+  display: grid;
+  grid-template:
+    repeat(calc(var(--clue-height) + var(--puzzle-height)), 1fr)
+    / repeat(
+      calc(var(--clue-width) + var(--puzzle-width)),
+      minmax(var(--min-cell-size), var(--max-cell-size))
+    );
+  object-fit: contain;
+  box-sizing: border-box;
+  direction: ltr;
+  writing-mode: horizontal-tb;
+  overflow: auto;
+
+  --bound-row: calc(var(--clue-height) + 1);
+  --bound-column: calc(var(--clue-width) + 1);
+  & > #content {
+    grid-row: 1 / var(--bound-row);
+    grid-column: 1 / var(--bound-column);
+  }
+  & > #vertical-clues {
+    grid-row: 1 / var(--bound-row);
+    grid-column: var(--bound-column) / -1;
+  }
+  & > #horizontal-clues {
+    grid-row: var(--bound-row) / -1;
+    grid-column: 1 / var(--bound-column);
+  }
+  & > #field {
+    grid-row: var(--bound-row) / -1;
+    grid-column: var(--bound-column) / -1;
+  }
+}
+
+#horizontal-clues {
+  display: flex;
+  flex-direction: column;
+  & > * {
+    flex-grow: 1;
+    height: 100%;
+  }
+}
+
+#horizontal-clues > .clues {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#vertical-clues {
+  display: flex;
+  flex-direction: row;
+  & > * {
+    flex-grow: 1;
+    width: 100%;
+  }
+}
+
+#vertical-clues > .clues {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.clue {
+  display: flex;
+  aspect-ratio: 1 / 1;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px var(--ion-border-color);
+  background: var(--ion-background-color);
+}
+
+#field {
+  display: grid;
+  grid-template: repeat(var(--puzzle-height), 1fr) / repeat(
+      var(--puzzle-width),
+      1fr
+    );
+}
+
+.cell {
+  aspect-ratio: 1 / 1;
+  border: outset 3px var(--ion-color-light);
+  background: var(--ion-color-light);
+}
+
+.cell:focus {
+  position: relative;
+  outline: 2px dashed var(--ion-color-primary);
+}
+
+.cell.revealed {
+  border: solid 1px var(--ion-color-dark);
+}
+
+.cell.revealed.incorrect {
+  border-color: var(--ion-color-danger);
+}
+
+.cell.revealed.goal-true {
+  background-color: var(--ion-color-dark);
+}
+
+.cell.revealed.goal-false {
+  background-color: var(--ion-color-light);
+  background-image: linear-gradient(
+      45deg,
+      transparent 48%,
+      var(--ion-color-dark) 48% 52%,
+      transparent 52%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 48%,
+      var(--ion-color-dark) 48% 52%,
+      transparent 52%
+    );
+  background-size: 80%;
+  background-position: center;
+  background-repeat: no-repeat;
+}

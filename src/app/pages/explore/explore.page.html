@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>explore</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher
+    #refresher
+    slot="fixed"
+    [disabled]="!(puzzles$ | async)?.length"
+  >
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container>
+    <ion-list>
+      <ng-container *ngFor="let puzzle of puzzles$ | async">
+        <ion-item [routerLink]="['/puzzle', puzzle.id]">
+          {{ puzzle.title }}
+        </ion-item>
+      </ng-container>
+      <ng-container *ngIf="loading$ | async">
+        <ng-container *ngFor="let _ of range(20)">
+          <ion-item>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </ion-item>
+        </ng-container>
+      </ng-container>
+    </ion-list>
+  </ng-container>
+</ion-content>

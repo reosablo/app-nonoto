@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      play
+      <ng-container *ngIf="puzzle$ | async as puzzle">
+        - {{ puzzle.title }}
+      </ng-container>
+    </ion-title>
+    <ng-container *ngIf="loading$ | async">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </ng-container>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="puzzle$ | async as puzzle">
+    <app-puzzle [puzzle]="puzzle" [invertClicks]="!toggle.checked">
+      <label (click)="toggle.checked = !toggle.checked">
+        tap mode
+        <ion-toggle #toggle checked></ion-toggle>
+      </label>
+    </app-puzzle>
+  </ng-container>
+</ion-content>
